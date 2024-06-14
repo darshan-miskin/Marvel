@@ -11,7 +11,6 @@ activity = "1.9.0"
 constraintlayout = "2.1.4"
 gson = "2.10.1"
 org-jetbrains-kotlin-kapt = "2.0.0"
-local-data = "0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,5 +27,4 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrainsKotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "org-jetbrains-kotlin-kapt" }
-localData = { id = "com.google.secrets_gradle_plugin", version.ref = "local-data" }
 

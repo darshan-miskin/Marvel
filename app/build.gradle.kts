@@ -4,17 +4,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinKapt)
-    alias(libs.plugins.localData)
     id("kotlin-android")
     id("com.google.dagger.hilt.android")
 }
 
 val localProperties = Properties()
-//val localPropertiesFile = rootProject.file("local.properties")
-//if (localPropertiesFile.exists()) {
-//    localProperties.load(FileInputStream(localPropertiesFile))
-//}
-
 val keystoreFile = project.rootProject.file("private.properties")
 val properties = Properties()
 properties.load(keystoreFile.inputStream())
