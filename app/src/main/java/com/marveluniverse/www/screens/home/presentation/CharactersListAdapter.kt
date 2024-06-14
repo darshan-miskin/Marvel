@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.marveluniverse.www.R
@@ -17,7 +16,7 @@ import com.marveluniverse.www.screens.home.domain.response.charactermodels.Chara
 class CharactersListAdapter(
     private val listener: Listener,
     private val lifecycleOwner: LifecycleOwner) :
-    PagingDataAdapter<CharacterModel, CharactersListAdapter.CharacterHolder>(CharacterModelDiffUtil()) {
+    ListAdapter<CharacterModel, CharactersListAdapter.CharacterHolder>(CharacterModelDiffUtil()) {
 
     interface Listener {
         fun onCharacterClick(
@@ -30,7 +29,7 @@ class CharactersListAdapter(
     inner class CharacterHolder(val binding: ItemRecyclerCharactersBinding) : ViewHolder(binding.root){
         init {
             binding.root.setOnClickListener { _ ->
-                getItem(absoluteAdapterPosition)?.let {
+                getItem(adapterPosition)?.let {
                     listener.onCharacterClick(
                         it,
                         binding.ivThumbnail,

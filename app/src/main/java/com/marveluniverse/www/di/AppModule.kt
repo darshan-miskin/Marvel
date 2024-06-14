@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.Calendar
 import javax.inject.Singleton
 
@@ -39,10 +40,10 @@ class AppModule {
 
             val newRequest = oldRequest.newBuilder().url(newUrl).build()
 
-            Log.d(TAG_API, "request.url= ${newRequest.url}")
+            Timber.tag(TAG_API).d("request.url= ${newRequest.url}")
             return@Interceptor chain.proceed(newRequest)
         })
-        .addInterceptor(HttpLoggingInterceptor().also { it.setLevel(HttpLoggingInterceptor.Level.BODY)})
+        .addInterceptor(HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY)})
         .build()
 
     @Provides

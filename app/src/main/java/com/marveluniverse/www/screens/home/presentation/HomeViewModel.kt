@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import com.marveluniverse.www.screens.common.TAG_LIFECYCLE
 import com.marveluniverse.www.screens.common.domain.response.Result
+import com.marveluniverse.www.screens.common.domain.response.State
 import com.marveluniverse.www.screens.home.domain.GetCharactersUseCase
-import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,18 +19,22 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _charactersLiveData = MutableLiveData<Result>()
     val charactersLiveData: LiveData<Result> get() = _charactersLiveData
+    var isPageEnd = false
+    var isLoading = false
 
-//    init {
-//        getCharacters()
-//    }
+    init {
+        getCharacters(State.REFRESH)
+    }
 
-    fun getCharactersPaging() = charactersUseCase.getCharactersPaging()
-
-//    fun getCharacters() = viewModelScope.launch {
-//        _charactersLiveData.postValue(Result.Loading)
-//        val result = charactersUseCase.getCharacters()
-//        _charactersLiveData.postValue(result)
-//    }
+    fun getCharacters(loadingState: State) = viewModelScope.launch {
+        _charactersLiveData.postValue(Result.Loading(loadingState))
+        val result = charactersUseCase.getCharacters()
+        if(result is Result.Success){
+            Timber.d("result.response.size: ${result.response.size}")
+            isPageEnd = result.response.size == 0
+        }
+        _charactersLiveData.postValue(result)
+    }
 
     override fun onCleared() {
         super.onCleared()

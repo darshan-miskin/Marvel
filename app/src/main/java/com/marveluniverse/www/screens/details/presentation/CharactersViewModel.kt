@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marveluniverse.www.screens.common.domain.response.Result
+import com.marveluniverse.www.screens.common.domain.response.State
 import com.marveluniverse.www.screens.details.domain.GetComicsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,12 +18,12 @@ class CharactersViewModel @Inject constructor(
     val comicsLiveData get() = _comicsLiveData
 
     init {
-        getComics()
+        getComics(State.REFRESH)
     }
 
-    private fun getComics()  {
+    private fun getComics(loadingState: State)  {
         viewModelScope.launch {
-            _comicsLiveData.postValue(Result.Loading)
+            _comicsLiveData.postValue(Result.Loading(loadingState))
             val result = getComicsUseCase.getComics()
             _comicsLiveData.postValue(result)
         }

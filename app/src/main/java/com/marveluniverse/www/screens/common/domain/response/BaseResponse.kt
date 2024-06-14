@@ -12,5 +12,8 @@ data class BaseResponse<T: BaseResult>(
 sealed class Result{
     data class Success(val response: ArrayList<out BaseResult>) : Result()
     data object Failure : Result()
-    data object Loading : Result()
+    data class Loading(val state: State) : Result()
+}
+enum class State {
+    REFRESH, LIST_APPEND
 }

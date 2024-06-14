@@ -80,10 +80,6 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.room:room-paging:$room_version")
 
-    //paging
-    val paging_version = "3.3.0"
-    implementation("androidx.paging:paging-runtime:$paging_version")
-
     //logging
     implementation("com.jakewharton.timber:timber:5.0.1")
 

@@ -33,7 +33,7 @@ data class CharacterModel(
     @ColumnInfo(name = "isComplete")
     var isComplete: Boolean = false
         get() = thumbnail?.path?.lowercase()
-        ?.contains("image_not_available") == false && description?.trim()?.isEmpty() == false
+        ?.contains("image_not_available") == false/* && description?.trim()?.isEmpty() == false*/
 
     companion object {
         fun List<CharacterModel>.print(stringName: String = "data") {

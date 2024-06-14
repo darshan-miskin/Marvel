@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.marveluniverse.www.R
 import com.marveluniverse.www.databinding.ActivityHomeBinding
 import com.marveluniverse.www.screens.common.domain.response.Result
+import com.marveluniverse.www.screens.common.domain.response.State
 import com.marveluniverse.www.screens.common.presentation.BaseActivity
 import com.marveluniverse.www.screens.common.presentation.gone
 import com.marveluniverse.www.screens.common.presentation.visible
@@ -42,21 +43,23 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
         val adapter = CharactersListAdapter(this, this)
         binding.adapter = adapter
 
-
-        lifecycleScope.launch {
-            viewModel.getCharactersPaging().collect {
-                Timber.d(it.toString())
-                binding.pbPageLoading.gone()
-                binding.pbRvLoading.gone()
-                binding.rvMain.visible()
-                adapter.submitData(lifecycle, it)
-            }
-        }
-
-        /*viewModel.charactersLiveData.observe(this) {
+        viewModel.charactersLiveData.observe(this) {
             when(it){
-                Result.Loading -> {}
+                is Result.Loading -> {
+                    viewModel.isLoading = true
+                    when(it.state){
+                        State.REFRESH -> {
+                            binding.pbPageLoading.visible()
+                            binding.pbRvLoading.gone()
+                            binding.rvMain.gone()
+                        }
+                        State.LIST_APPEND -> {
+                            binding.pbRvLoading.visible()
+                        }
+                    }
+                }
                 is Result.Success -> {
+                    viewModel.isLoading = false
                     binding.pbPageLoading.gone()
                     binding.pbRvLoading.gone()
                     binding.rvMain.visible()
@@ -64,8 +67,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                     list.addAll(0, adapter.currentList)
                     adapter.submitList(list)
                 }
-                Result.Failure ->
+                Result.Failure -> {
+                    viewModel.isLoading = false
                     Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -73,12 +78,16 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (!recyclerView.canScrollVertically(1)) {
-                    binding.pbRvLoading.visible()
-                    viewModel.getCharacters()
+                if (!recyclerView.canScrollVertically(1) && !viewModel.isPageEnd &&
+                    !viewModel.isLoading) {
+                    viewModel.getCharacters(State.LIST_APPEND)
                 }
             }
-        })*/
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 
     override fun onCharacterClick(
