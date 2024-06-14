@@ -20,14 +20,5 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val charactersUseCase: GetCharactersUseCase
 ) : ViewModel() {
-    private val _charactersLiveData = MutableLiveData<Result>()
-    val charactersLiveData: LiveData<Result> get() = _charactersLiveData
-
     fun getCharactersPaging() = charactersUseCase.getCharactersPaging()
-
-    override fun onCleared() {
-        super.onCleared()
-        Timber.tag(TAG_LIFECYCLE).i("_charactersLiveData: $_charactersLiveData")
-        Timber.tag(TAG_LIFECYCLE).i("charactersLiveData: $charactersLiveData")
-    }
 }
