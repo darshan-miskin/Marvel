@@ -53,32 +53,16 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
             }
         }
 
-        /*viewModel.charactersLiveData.observe(this) {
-            when(it){
-                Result.Loading -> {}
-                is Result.Success -> {
-                    binding.pbPageLoading.gone()
-                    binding.pbRvLoading.gone()
-                    binding.rvMain.visible()
-                    val list: ArrayList<CharacterModel> = it.response as ArrayList<CharacterModel>
-                    list.addAll(0, adapter.currentList)
-                    adapter.submitList(list)
-                }
-                Result.Failure ->
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
-            }
-        }
-
         binding.rvMain.addOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if (!recyclerView.canScrollVertically(1)) {
                     binding.pbRvLoading.visible()
-                    viewModel.getCharacters()
+//                    viewModel.getCharacters()
                 }
             }
-        })*/
+        })
     }
 
     override fun onCharacterClick(

@@ -23,17 +23,7 @@ class HomeViewModel @Inject constructor(
     private val _charactersLiveData = MutableLiveData<Result>()
     val charactersLiveData: LiveData<Result> get() = _charactersLiveData
 
-//    init {
-//        getCharacters()
-//    }
-
     fun getCharactersPaging() = charactersUseCase.getCharactersPaging()
-
-//    fun getCharacters() = viewModelScope.launch {
-//        _charactersLiveData.postValue(Result.Loading)
-//        val result = charactersUseCase.getCharacters()
-//        _charactersLiveData.postValue(result)
-//    }
 
     override fun onCleared() {
         super.onCleared()

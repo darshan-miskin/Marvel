@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.marveluniverse.www.R
 import com.marveluniverse.www.databinding.ItemRecyclerCharactersBinding
