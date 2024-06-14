@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true">
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.marveluniverse.www.screens.home.presentation.CharactersListAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.home.presentation.HomeActivity">
+
+        <ProgressBar
+            android:id="@+id/pb_page_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:visibility="visible"
+            android:padding="160dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:listitem="@layout/item_recycler_characters"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/pb_rv_loading"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pb_rv_loading"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:padding="4dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_main"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

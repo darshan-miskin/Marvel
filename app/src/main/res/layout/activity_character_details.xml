@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="character"
+            type="com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:context=".screens.details.presentation.CharacterDetailsActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                tools:background="@color/black"
+                app:loadImage="@{character.thumbnailUrl}"
+                android:transitionName="imageShared"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintHeight_percent=".6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_description"/>
+
+            <TextView
+                android:id="@+id/txt_character_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Character Name"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:text="@{character.name}"
+                android:padding="8dp"
+                android:transitionName="textShared"
+                android:background="@drawable/gradient_character_name"
+                app:layout_constraintBottom_toBottomOf="@id/iv_thumbnail"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                tools:text="@tools:sample/lorem/random"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@{character.description}"
+                app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_comics_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:textStyle="bold"
+                android:paddingHorizontal="16dp"
+                android:textSize="18sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text=""
+                app:layout_constraintTop_toBottomOf="@id/tv_description"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

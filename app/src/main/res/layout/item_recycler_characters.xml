@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="character"
+            type="com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            app:loadImage="@{character.thumbnailUrl}"
+            android:transitionName="imageShared"
+            tools:background="@android:color/darker_gray"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_character_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Character Name"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="@{character.name}"
+            android:padding="8dp"
+            android:transitionName="textShared"
+            android:background="@drawable/gradient_character_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

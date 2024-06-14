@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MarvelUniverse</string>
+    <string name="comics_s_has_appeared_in">Comics $s has appeared in</string>
+</resources>
