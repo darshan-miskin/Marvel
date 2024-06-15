@@ -19,21 +19,25 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _charactersLiveData = MutableLiveData<Result>()
     val charactersLiveData: LiveData<Result> get() = _charactersLiveData
-    var isPageEnd = false
-    var isLoading = false
+    private var isPageEnd = false
+    private var isLoading = false
 
     init {
         getCharacters(State.REFRESH)
     }
 
     fun getCharacters(loadingState: State) = viewModelScope.launch {
-        _charactersLiveData.postValue(Result.Loading(loadingState))
-        val result = charactersUseCase.getCharacters()
-        if(result is Result.Success){
-            Timber.d("result.response.size: ${result.response.size}")
-            isPageEnd = result.response.size == 0
+        if(!isPageEnd && !isLoading) {
+            isLoading = true
+            _charactersLiveData.postValue(Result.Loading(loadingState))
+            val result = charactersUseCase.getCharacters()
+            if (result is Result.Success) {
+                Timber.d("result.response.size: ${result.response.size}")
+                isPageEnd = result.response.size == 0
+            }
+            isLoading = false
+            _charactersLiveData.postValue(result)
         }
-        _charactersLiveData.postValue(result)
     }
 
     override fun onCleared() {

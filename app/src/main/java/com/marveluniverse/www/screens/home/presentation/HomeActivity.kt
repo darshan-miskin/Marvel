@@ -46,7 +46,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
         viewModel.charactersLiveData.observe(this) {
             when(it){
                 is Result.Loading -> {
-                    viewModel.isLoading = true
                     when(it.state){
                         State.REFRESH -> {
                             binding.pbPageLoading.visible()
@@ -59,7 +58,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                     }
                 }
                 is Result.Success -> {
-                    viewModel.isLoading = false
                     binding.pbPageLoading.gone()
                     binding.pbRvLoading.gone()
                     binding.rvMain.visible()
@@ -68,7 +66,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                     adapter.submitList(list)
                 }
                 Result.Failure -> {
-                    viewModel.isLoading = false
                     Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
             }
@@ -78,8 +75,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (!recyclerView.canScrollVertically(1) && !viewModel.isPageEnd &&
-                    !viewModel.isLoading) {
+                if (!recyclerView.canScrollVertically(1)) {
                     viewModel.getCharacters(State.LIST_APPEND)
                 }
             }
