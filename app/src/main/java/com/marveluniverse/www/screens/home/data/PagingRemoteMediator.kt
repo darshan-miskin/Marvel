@@ -23,10 +23,8 @@ class PagingRemoteMediator @Inject constructor(
         loadType: LoadType,
         state: PagingState<Int, CharacterModel>
     ): MediatorResult {
-        val lastItem = state.lastItemOrNull()
 
-        Timber.tag("remote_mediator").d("loadType: $loadType \t lastItem: ${state.lastItemOrNull()?.name} \t " +
-                "firstItem: ${state.firstItemOrNull()?.name}")
+        val lastItem = state.lastItemOrNull()
 
         val offset = when(loadType){
             LoadType.REFRESH -> 0
@@ -41,11 +39,15 @@ class PagingRemoteMediator @Inject constructor(
         }
         try{
             val response = remoteDataSource.getCharactersPaging(LIMIT, offset)
-            val result = response.data.results
+//            val result = response.data.results
+
+            //filter out data with no images and set empty description value
+            val result = response.data.results.filter { it.isComplete }.onEach {
+                if(it.description.isNullOrEmpty()) it.description = "Description Not Available"
+            }
+
             localDataSource.insert(result)
             remoteOffset = response.data.offset + response.data.count
-
-            Timber.tag("remote_mediator").d("limit: $LIMIT \t offset: $offset")
 
             return MediatorResult.Success(endOfPaginationReached = result.isEmpty())
         }

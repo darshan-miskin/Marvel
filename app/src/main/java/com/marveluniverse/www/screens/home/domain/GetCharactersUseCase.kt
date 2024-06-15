@@ -1,6 +1,5 @@
 package com.marveluniverse.www.screens.home.domain
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
