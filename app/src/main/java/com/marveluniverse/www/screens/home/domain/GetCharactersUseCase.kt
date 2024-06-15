@@ -7,6 +7,7 @@ import com.marveluniverse.www.screens.home.data.RemoteDataSource
 import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,10 +25,12 @@ class GetCharactersUseCase @Inject constructor(
     private var dbOffSet = 0
 
     suspend fun getCharacters() = withContext(Dispatchers.IO) {
-        val dbList = localDataSource.fetchCharacters(20, dbOffSet)
+        val dbList = localDataSource.fetchCharacters(40, dbOffSet)
         if(dbList.isNotEmpty()) {
             dbOffSet += dbList.size
             offSet+=dbList.size
+            //db fetch is too fast, loader isn't visible without delay
+            delay(500)
             return@withContext Result.Success(dbList)
         }
         else {

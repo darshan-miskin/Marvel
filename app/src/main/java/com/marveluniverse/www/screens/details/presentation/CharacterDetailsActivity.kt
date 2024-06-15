@@ -23,13 +23,12 @@ import timber.log.Timber
 class CharacterDetailsActivity :
     BaseActivity<ActivityCharacterDetailsBinding>(R.layout.activity_character_details) {
 
-    private val viewModel: CharactersViewModel by viewModels()
+//    private val viewModel: CharactersViewModel by viewModels()
     private lateinit var characterModel: CharacterModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        @Suppress("DEPRECATION")
         characterModel = if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
             intent.getSerializableExtra(INTENT_CHARACTER_MODEL) as CharacterModel
         else
@@ -37,40 +36,9 @@ class CharacterDetailsActivity :
 
         binding.character = characterModel
 
-        viewModel.comicsLiveData.observe(this){
-
-        }
-        Timber.i("onCreate()")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Timber.i("onStart()")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Timber.i("onResume()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Timber.i("onPause()")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Timber.i("onStop()")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.i("onDestroy()")
-    }
-
-
-    override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
-        super.onTopResumedActivityChanged(isTopResumedActivity)
+//        viewModel.comicsLiveData.observe(this){
+//
+//        }
     }
 
     companion object {
