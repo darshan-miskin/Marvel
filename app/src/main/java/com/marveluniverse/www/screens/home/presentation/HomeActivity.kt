@@ -27,13 +27,18 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
         binding.adapter = adapter
 
         adapter.addLoadStateListener {
-            when(it.append){
-                is LoadState.Error -> binding.pbRvLoading.gone()
+            when(it.append) {
+                is LoadState.Error -> {
+                    showToast(getString(R.string.something_went_wrong))
+                    binding.pbRvLoading.gone()
+                }
                 LoadState.Loading -> binding.pbRvLoading.visible()
                 is LoadState.NotLoading -> binding.pbRvLoading.gone()
             }
             when(it.refresh){
-                is LoadState.Error -> {}
+                is LoadState.Error -> {
+                    showToast(getString(R.string.something_went_wrong))
+                }
                 LoadState.Loading -> {
                     binding.pbPageLoading.visible()
                     binding.rvMain.gone()}
