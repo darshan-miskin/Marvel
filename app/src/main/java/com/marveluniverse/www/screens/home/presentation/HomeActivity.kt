@@ -1,19 +1,12 @@
 package com.marveluniverse.www.screens.home.presentation
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.marveluniverse.www.R
@@ -23,14 +16,8 @@ import com.marveluniverse.www.screens.common.domain.response.State
 import com.marveluniverse.www.screens.common.presentation.BaseActivity
 import com.marveluniverse.www.screens.common.presentation.gone
 import com.marveluniverse.www.screens.common.presentation.visible
-import com.marveluniverse.www.screens.details.presentation.CharacterDetailsActivity
 import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
@@ -50,7 +37,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                         State.REFRESH -> {
                             binding.pbPageLoading.visible()
                             binding.pbRvLoading.gone()
-                            binding.rvMain.gone()
+                            binding.rvMain.visible()
                         }
                         State.LIST_APPEND -> {
                             binding.pbRvLoading.visible()
@@ -61,12 +48,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                     binding.pbPageLoading.gone()
                     binding.pbRvLoading.gone()
                     binding.rvMain.visible()
-                    val list: ArrayList<CharacterModel> = it.response as ArrayList<CharacterModel>
+                    val list: ArrayList<CharacterModel> = it.getResponse()
                     list.addAll(0, adapter.currentList)
                     adapter.submitList(list)
                 }
                 Result.Failure -> {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -78,10 +65,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                 if (!recyclerView.canScrollVertically(1)) {
                     viewModel.getCharacters(State.LIST_APPEND)
                 }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
             }
         })
     }

@@ -4,7 +4,6 @@ import android.util.Log
 import com.marveluniverse.www.networking.retrofit.MarvelApi
 import com.marveluniverse.www.screens.common.domain.response.Result
 import com.marveluniverse.www.screens.common.TAG_API
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

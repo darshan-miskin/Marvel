@@ -1,6 +1,5 @@
 package com.marveluniverse.www.screens.home.domain
 
-import android.util.Log
 import com.marveluniverse.www.screens.common.domain.response.Result
 import com.marveluniverse.www.screens.common.TAG_API
 import com.marveluniverse.www.screens.home.data.LocalDataSource
@@ -18,17 +17,18 @@ class GetCharactersUseCase @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
 ) {
     companion object {
-        val LIMIT = 100
+        const val LIMIT = 100
     }
+    //separate offset for local & remote because, data is inserted after filtering
     private var offSet = 0
-
     private var dbOffSet = 0
 
     suspend fun getCharacters() = withContext(Dispatchers.IO) {
         val dbList = localDataSource.fetchCharacters(20, dbOffSet)
         if(dbList.isNotEmpty()) {
             dbOffSet += dbList.size
-            return@withContext Result.Success(dbList as ArrayList)
+            offSet+=dbList.size
+            return@withContext Result.Success(dbList)
         }
         else {
             val response = remoteDataSource.getCharacters(LIMIT, offSet)
@@ -37,17 +37,19 @@ class GetCharactersUseCase @Inject constructor(
                 var result = response.body()!!.data.results
                 val names = result.map { it.name }
                 Timber.d(names.toString())
+
                 //filter out data which do not have image and if description is empty, set a string
                 result = result.filter { it.isComplete }.onEach { it.description =
                     if(it.description.isNullOrEmpty()) "Description Not Available"
                     else it.description
                 } as ArrayList<CharacterModel>
+
                 val insertCount = localDataSource.insert(result).size
-                val dbList = localDataSource.fetchCharacters(insertCount, dbOffSet)
-                dbOffSet += dbList.size
-                return@withContext Result.Success(dbList as ArrayList)
+                val dbListUpdated = localDataSource.fetchCharacters(insertCount, dbOffSet)
+                dbOffSet += dbListUpdated.size
+                return@withContext Result.Success(dbListUpdated)
             } else {
-                Timber.d(TAG_API, "api call error")
+                Timber.tag(TAG_API).d("api call error: ${response.errorBody().toString()}")
                 return@withContext Result.Failure
             }
         }

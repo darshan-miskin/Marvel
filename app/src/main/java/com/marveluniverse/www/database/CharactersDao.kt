@@ -10,7 +10,7 @@ import com.marveluniverse.www.screens.home.domain.response.charactermodels.Chara
 
 @Dao
 interface CharactersDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(characters: List<CharacterModel>): List<Long>
 
     @Query("select * from charactermodel order by name limit :limit offset :offSet")

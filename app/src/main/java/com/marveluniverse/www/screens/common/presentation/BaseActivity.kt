@@ -24,8 +24,6 @@ abstract class BaseActivity<T: ViewDataBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layout)
-
-        Log.d(TAG_HASH, "screenNavigatorHashCode: ${screensNavigator.hashCode()}")
     }
 
     fun showToast(string: String){
