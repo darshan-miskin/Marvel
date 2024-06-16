@@ -18,4 +18,7 @@ interface CharactersDao {
 
     @Query("select * from charactermodel order by name COLLATE NOCASE ASC")
     fun charactersPagingSource() : PagingSource<Int, CharacterModel>
+
+    @Query("delete from charactermodel")
+    suspend fun clearAll()
 }

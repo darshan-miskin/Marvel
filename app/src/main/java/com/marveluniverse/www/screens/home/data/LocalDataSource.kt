@@ -8,6 +8,8 @@ class LocalDataSource @Inject constructor(private val charactersDao: CharactersD
 
     suspend fun insert(list: List<CharacterModel>) = charactersDao.insert(list)
 
+    suspend fun clearAll() = charactersDao.clearAll()
+
     suspend fun fetchCharacters(limit: Int, offSet:Int) = charactersDao.fetchCharacters(limit, offSet)
 
     fun charactersPagingSource() = charactersDao.charactersPagingSource()
