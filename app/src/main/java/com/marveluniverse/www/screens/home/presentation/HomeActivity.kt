@@ -9,6 +9,7 @@ import androidx.paging.LoadState
 import com.marveluniverse.www.R
 import com.marveluniverse.www.databinding.ActivityHomeBinding
 import com.marveluniverse.www.screens.common.presentation.BaseActivity
+import com.marveluniverse.www.screens.common.presentation.BindingActivity
 import com.marveluniverse.www.screens.common.presentation.gone
 import com.marveluniverse.www.screens.common.presentation.visible
 import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
@@ -16,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
+class HomeActivity : BindingActivity<ActivityHomeBinding>(R.layout.activity_home),
     CharactersListAdapter.Listener {
     private val viewModel: HomeViewModel by viewModels()
 
