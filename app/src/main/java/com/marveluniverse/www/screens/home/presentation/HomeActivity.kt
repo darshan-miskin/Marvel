@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home),
                         State.REFRESH -> {
                             binding.pbPageLoading.visible()
                             binding.pbRvLoading.gone()
-                            binding.rvMain.visible()
+                            binding.rvMain.gone()
                         }
                         State.LIST_APPEND -> {
                             binding.pbRvLoading.visible()
