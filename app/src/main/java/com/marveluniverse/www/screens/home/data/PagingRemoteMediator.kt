@@ -52,8 +52,7 @@ class PagingRemoteMediator @Inject constructor(
             localDataSource.insert(result)
             remoteOffset = response.data.offset + response.data.count
 
-            val endCondition = response.data.count == response.data.total
-            return MediatorResult.Success(endOfPaginationReached = endCondition)
+            return MediatorResult.Success(endOfPaginationReached = response.data.count == response.data.total)
         }
         catch (e: Exception) {
             return MediatorResult.Error(IOException(e.message))
