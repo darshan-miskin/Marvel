@@ -15,13 +15,14 @@ import androidx.core.view.ViewCompat
 import com.marveluniverse.www.R
 import com.marveluniverse.www.databinding.ActivityCharacterDetailsBinding
 import com.marveluniverse.www.screens.common.presentation.BaseActivity
+import com.marveluniverse.www.screens.common.presentation.BindingActivity
 import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class CharacterDetailsActivity :
-    BaseActivity<ActivityCharacterDetailsBinding>(R.layout.activity_character_details) {
+    BindingActivity<ActivityCharacterDetailsBinding>(R.layout.activity_character_details) {
 
 //    private val viewModel: CharactersViewModel by viewModels()
     private lateinit var characterModel: CharacterModel
