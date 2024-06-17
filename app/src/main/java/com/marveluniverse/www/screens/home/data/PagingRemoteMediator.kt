@@ -49,7 +49,7 @@ class PagingRemoteMediator @Inject constructor(
             }
 
             localDataSource.withTransaction {
-                if(loadType == LoadType.REFRESH){
+                if(loadType == LoadType.REFRESH && result.isNotEmpty()){
                     localDataSource.clearAll()
                 }
                 localDataSource.insert(result)
@@ -58,6 +58,8 @@ class PagingRemoteMediator @Inject constructor(
 
             return MediatorResult.Success(endOfPaginationReached = response.data.count == response.data.total)
         } catch (e: IOException) {
+            if(e is UnknownHostException && loadType == LoadType.REFRESH)
+                return MediatorResult.Success(false)
             return MediatorResult.Error(e)
         } catch (e: HttpException) {
             return MediatorResult.Error(e)
