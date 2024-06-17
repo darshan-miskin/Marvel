@@ -11,7 +11,7 @@ class LocalDataSource @Inject constructor(
 ) {
     private val charactersDao = database.charactersDao()
 
-    suspend fun withTransaction(transaction: suspend () -> Unit ) = database.withTransaction { transaction }
+    suspend fun withTransaction(transaction: suspend () -> Unit ) = database.withTransaction { transaction.invoke() }
 
     suspend fun insert(list: List<CharacterModel>) = charactersDao.insert(list)
 

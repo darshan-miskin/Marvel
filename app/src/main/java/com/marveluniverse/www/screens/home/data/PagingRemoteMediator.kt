@@ -22,10 +22,6 @@ class PagingRemoteMediator @Inject constructor(
 ) :
     RemoteMediator<Int, CharacterModel>() {
 
-    override suspend fun initialize(): InitializeAction {
-        return InitializeAction.SKIP_INITIAL_REFRESH
-    }
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CharacterModel>
