@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.marveluniverse.www.screens.common.ScreensNavigator
 import javax.inject.Inject
 
-abstract class BaseActivity() : AppCompatActivity(){
-
+abstract class BaseActivity : AppCompatActivity(){
     @Inject lateinit var screensNavigator: ScreensNavigator
 
     fun showToast(string: String){

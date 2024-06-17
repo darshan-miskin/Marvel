@@ -38,11 +38,13 @@ class HomeActivity : BindingActivity<ActivityHomeBinding>(R.layout.activity_home
             }
             when(it.refresh){
                 is LoadState.Error -> {
+                    binding.pbPageLoading.gone()
                     showToast(getString(R.string.something_went_wrong))
                 }
                 LoadState.Loading -> {
                     binding.pbPageLoading.visible()
-                    binding.rvMain.gone()}
+                    binding.rvMain.gone()
+                }
                 is LoadState.NotLoading -> {
                     binding.pbPageLoading.gone()
                     binding.rvMain.visible()

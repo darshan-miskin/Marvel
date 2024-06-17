@@ -7,7 +7,9 @@ import androidx.paging.RemoteMediator
 import com.marveluniverse.www.screens.common.TAG_DATA
 import com.marveluniverse.www.screens.home.domain.response.charactermodels.CharacterModel
 import okio.IOException
+import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 const val LIMIT = 60
@@ -19,6 +21,10 @@ class PagingRemoteMediator @Inject constructor(
     private val localDataSource: LocalDataSource
 ) :
     RemoteMediator<Int, CharacterModel>() {
+
+    override suspend fun initialize(): InitializeAction {
+        return InitializeAction.SKIP_INITIAL_REFRESH
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -46,16 +52,19 @@ class PagingRemoteMediator @Inject constructor(
                 if(it.description.isNullOrEmpty()) it.description = "Description Not Available"
             }
 
-            if(loadType == LoadType.REFRESH){
-                localDataSource.clearAll()
+            localDataSource.withTransaction {
+                if(loadType == LoadType.REFRESH){
+                    localDataSource.clearAll()
+                }
+                localDataSource.insert(result)
             }
-            localDataSource.insert(result)
             remoteOffset = response.data.offset + response.data.count
 
             return MediatorResult.Success(endOfPaginationReached = response.data.count == response.data.total)
-        }
-        catch (e: Exception) {
-            return MediatorResult.Error(IOException(e.message))
+        } catch (e: IOException) {
+            return MediatorResult.Error(e)
+        } catch (e: HttpException) {
+            return MediatorResult.Error(e)
         }
     }
 
