@@ -34,25 +34,31 @@ class GetCharactersUseCase @Inject constructor(
             return@withContext Result.Success(dbList)
         }
         else {
-            val response = remoteDataSource.getCharacters(LIMIT, offSet)
-            if (response.isSuccessful && response.body() != null) {
-                offSet += LIMIT
-                var result = response.body()!!.data.results
-                val names = result.map { it.name }
-                Timber.d(names.toString())
+            try {
+                val response = remoteDataSource.getCharacters(LIMIT, offSet)
+                if (response.isSuccessful && response.body() != null) {
+                    offSet += LIMIT
+                    var result = response.body()!!.data.results
+                    val names = result.map { it.name }
+                    Timber.d(names.toString())
 
-                //filter out data which do not have image and if description is empty, set a string
-                result = result.filter { it.isComplete }.onEach { it.description =
-                    if(it.description.isNullOrEmpty()) "Description Not Available"
-                    else it.description
-                } as ArrayList<CharacterModel>
+                    //filter out data which do not have image and if description is empty, set a string
+                    result = result.filter { it.isComplete }.onEach {
+                        it.description =
+                            if (it.description.isNullOrEmpty()) "Description Not Available"
+                            else it.description
+                    } as ArrayList<CharacterModel>
 
-                val insertCount = localDataSource.insert(result).size
-                val dbListUpdated = localDataSource.fetchCharacters(insertCount, dbOffSet)
-                dbOffSet += dbListUpdated.size
-                return@withContext Result.Success(dbListUpdated)
-            } else {
-                Timber.tag(TAG_API).d("api call error: ${response.errorBody().toString()}")
+                    val insertCount = localDataSource.insert(result).size
+                    val dbListUpdated = localDataSource.fetchCharacters(insertCount, dbOffSet)
+                    dbOffSet += dbListUpdated.size
+                    return@withContext Result.Success(dbListUpdated)
+                } else {
+                    Timber.tag(TAG_API).d("api call error: ${response.errorBody().toString()}")
+                    return@withContext Result.Failure
+                }
+            }catch (e: Exception){
+                Timber.tag(TAG_API).d("api call error: ${e.stackTrace}")
                 return@withContext Result.Failure
             }
         }

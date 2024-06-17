@@ -54,6 +54,8 @@ class HomeActivity : BindingActivity<ActivityHomeBinding>(R.layout.activity_home
                     adapter.submitList(list)
                 }
                 Result.Failure -> {
+                    binding.pbPageLoading.gone()
+                    binding.pbRvLoading.gone()
                     showToast(getString(R.string.something_went_wrong))
                 }
             }
