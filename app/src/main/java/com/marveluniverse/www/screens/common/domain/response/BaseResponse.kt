@@ -9,8 +9,3 @@ data class BaseResponse<T: BaseResult>(
     val data: BaseData<T>
 )
 
-sealed class Result{
-    data class Success(val response: ArrayList<out BaseResult>) : Result()
-    data object Failure : Result()
-    data object Loading : Result()
-}
